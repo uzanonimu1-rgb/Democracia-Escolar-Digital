@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Democracia Escolar Digital — SEDUC Ceará</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -508,19 +507,12 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
   .foot-main .foot-col:nth-child(3),.foot-main .foot-col:nth-child(4){display:none}
 }
 
-/* ─── GOOGLE LOGIN ─── */
-.google-btn{
-  width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:11px 14px;border:1px solid var(--line);border-radius:var(--radius-2);
-  background:var(--surface);font-size:13px;font-weight:600;color:var(--ink-2);
-  cursor:pointer;font-family:'Inter',sans-serif;transition:border-color .12s,background .12s;
-}
-.google-btn:hover{border-color:var(--ink-3);background:var(--surface-2)}
-.login-divider{
-  display:flex;align-items:center;gap:10px;margin:16px 0;
-  font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.4px;
-}
-.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--line)}
+/* ─── LOGIN ─── */
+.login-tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:var(--radius-2);margin-bottom:20px}
+.login-tab{flex:1;font-size:12.5px;font-weight:600;padding:9px 10px;border-radius:4px;border:none;background:none;color:var(--ink-3);cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s,color .15s}
+.login-tab.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.login-pane{display:none}
+.login-pane.on{display:block}
 
 /* ─── TOAST ─── */
 .toast{
@@ -536,6 +528,99 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
 /* ─── EMPTY ─── */
 .empty-state{grid-column:1/-1;text-align:center;padding:64px 24px;color:var(--ink-4)}
 .empty-state p{font-size:14px;margin-top:8px}
+
+/* ═══════════════════ MOTION SYSTEM ═══════════════════ */
+
+/* Page transitions */
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.page.active{animation:pageIn .38s cubic-bezier(.16,1,.3,1) both}
+
+/* Sticky bits fade in with a slight stagger */
+.page.active .hero,.page.active > .highlight-bar{animation:pageIn .5s cubic-bezier(.16,1,.3,1) both}
+.page.active .sec{animation:pageIn .5s cubic-bezier(.16,1,.3,1) .05s both}
+
+/* Button press feedback everywhere */
+.btn-primary,.btn-secondary,.hero-btn-main,.hero-btn-sec,.opt-btn,.tab,.filter-btn,
+.pc-result-btn,.login-tab,.h-nav-btn,.link-more,.drawer-link{
+  transition:transform .12s cubic-bezier(.4,0,.2,1),background .15s,color .15s,border-color .15s,box-shadow .15s,opacity .15s;
+}
+.btn-primary:active,.hero-btn-main:active,.opt-btn:active,.pc-result-btn:active,
+.filter-btn:active,.tab:active,.login-tab:active,.btn-secondary:active,.hero-btn-sec:active{
+  transform:scale(.96);
+}
+.btn-primary:hover,.hero-btn-main:hover{transform:translateY(-1px)}
+.btn-primary:active,.hero-btn-main:active{transform:translateY(0) scale(.97)}
+
+/* Card lift on hover */
+.poll-card,.how-card,.trust-card{transition:background .15s,box-shadow .2s cubic-bezier(.4,0,.2,1),transform .2s cubic-bezier(.4,0,.2,1),border-color .2s}
+.poll-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(17,24,39,.06);z-index:1;position:relative}
+.trust-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(17,24,39,.06)}
+
+/* Gallery caption motion */
+.gal-cap{transform:translateY(6px)}
+.gal-item:hover .gal-cap{transform:translateY(0)}
+.gal-item img{transition:transform .5s cubic-bezier(.16,1,.3,1),filter .3s}
+
+/* Option button check pop */
+@keyframes checkPop{
+  0%{transform:scale(0)}
+  65%{transform:scale(1.35)}
+  100%{transform:scale(1)}
+}
+.opt-btn.voted .opt-btn-check-dot{animation:checkPop .35s cubic-bezier(.34,1.56,.64,1)}
+.opt-btn:active .opt-btn-check{transform:scale(.85)}
+.opt-btn-check{transition:transform .12s}
+
+/* Voted / released card confirmation flash */
+@keyframes cardVoted{
+  0%{background:var(--green-bg)}
+  100%{background:var(--surface)}
+}
+@keyframes cardRelease{
+  0%{opacity:1;transform:scale(1);max-height:600px}
+  100%{opacity:0;transform:scale(.97);max-height:0;padding:0;overflow:hidden;margin:0;border:0}
+}
+
+/* Modal motion */
+@keyframes modalBgIn{from{opacity:0}to{opacity:1}}
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(16px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.modal-bg.open{animation:modalBgIn .18s ease both}
+.modal-bg.open .modal{animation:modalIn .3s cubic-bezier(.16,1,.3,1) both}
+
+/* Drawer overlay fade */
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+.drawer-overlay.open{animation:overlayIn .2s ease both}
+.drawer-link{transition:color .12s,padding-left .18s,border-color .12s}
+.drawer-link:hover{padding-left:5px}
+
+/* Login tab pane crossfade */
+@keyframes paneIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.login-pane.on{animation:paneIn .22s cubic-bezier(.16,1,.3,1) both}
+
+/* Toast with a touch of bounce */
+.toast{transition:opacity .25s,transform .35s cubic-bezier(.34,1.56,.64,1)}
+
+/* Filter/tab underline & pill motion */
+.tab{position:relative}
+.filter-btn,.login-tab{transition:transform .12s,background .18s cubic-bezier(.4,0,.2,1),color .15s,border-color .15s}
+
+/* Pillar & option rows nudge on hover */
+.pillar-item{transition:transform .15s cubic-bezier(.4,0,.2,1),background .15s,border-color .15s}
+.pillar-item:hover{transform:translateX(3px)}
+
+/* Number ticking already handled in JS via rAF; smooth out layout */
+.hb-num,.ha-num{transition:color .2s}
+
+/* Respect reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
 </style>
 </head>
 <body>
@@ -572,12 +657,10 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
       <button class="h-nav-btn"    id="nb-votes"   onclick="nav('votes')">Participação</button>
       <button class="h-nav-btn"    id="nb-seguranca" onclick="nav('seguranca')">Segurança</button>
       <button class="h-nav-btn"    id="nb-galeria" onclick="nav('galeria')">Galeria</button>
+      <button class="h-nav-btn" id="nb-painel" onclick="nav('painel')" style="display:none">Painel</button>
     </nav>
     <div class="h-spacer"></div>
-    <div class="h-cta">
-      <button class="btn-secondary" onclick="nav('sobre')">Saiba mais</button>
-      <button class="btn-primary"   onclick="openLogin()">Entrar na plataforma</button>
-    </div>
+    <div class="h-cta" id="h-cta"></div>
     <button class="h-menu-btn" onclick="openDrawer()" aria-label="Abrir menu">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
@@ -595,14 +678,15 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <div class="drawer-body">
+  <div class="drawer-body" id="drawer-body">
     <button class="drawer-link" onclick="nav('home');closeDrawer()">Início <span class="arrow">›</span></button>
     <button class="drawer-link" onclick="nav('sobre');closeDrawer()">Como funciona <span class="arrow">›</span></button>
     <button class="drawer-link" onclick="nav('votes');closeDrawer()">Participação <span class="arrow">›</span></button>
     <button class="drawer-link" onclick="nav('seguranca');closeDrawer()">Segurança <span class="arrow">›</span></button>
     <button class="drawer-link" onclick="nav('galeria');closeDrawer()">Galeria <span class="arrow">›</span></button>
+    <button class="drawer-link" id="drawer-painel" onclick="nav('painel');closeDrawer()" style="display:none">Painel da Coordenação <span class="arrow">›</span></button>
   </div>
-  <div class="drawer-cta">
+  <div class="drawer-cta" id="drawer-cta">
     <button class="btn-primary" style="width:100%;padding:12px" onclick="openLogin();closeDrawer()">Entrar na plataforma</button>
   </div>
 </div>
@@ -743,9 +827,9 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
       <div class="sec-head"><div class="sec-eyebrow">Funcionamento</div><h2 class="sec-title">Como funciona a plataforma</h2></div>
       <div class="how-grid">
         <div class="how-card"><div class="how-num">01</div><h3>Pauta é aberta</h3><p>A coordenação ou o grêmio cadastra uma pauta com opções claras, público-alvo e prazo definido.</p></div>
-        <div class="how-card"><div class="how-num">02</div><h3>Alunos votam</h3><p>Cada estudante acessa com login institucional e registra seu voto. O sistema impede participação duplicada.</p></div>
-        <div class="how-card"><div class="how-num">03</div><h3>Resultado é liberado</h3><p>Conforme a regra definida na criação da votação: imediato, após o voto, ou apenas ao encerrar.</p></div>
-        <div class="how-card"><div class="how-num">04</div><h3>Decisão é implementada</h3><p>Ao encerrar, o resultado é oficializado e a gestão se compromete a executar a decisão coletiva.</p></div>
+        <div class="how-card"><div class="how-num">02</div><h3>Coordenação faz a triagem</h3><p>Toda pauta nova entra em triagem. A coordenação revisa e libera para votação pública quando estiver pronta.</p></div>
+        <div class="how-card"><div class="how-num">03</div><h3>Alunos votam</h3><p>Cada estudante acessa com login de aluno e registra seu voto. O sistema impede participação duplicada.</p></div>
+        <div class="how-card"><div class="how-num">04</div><h3>Resultado é implementado</h3><p>Ao encerrar, o resultado é oficializado e a gestão se compromete a executar a decisão coletiva.</p></div>
       </div>
     </div>
   </section>
@@ -765,8 +849,8 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
           <div class="trust-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"/></svg>
           </div>
-          <h3>Acesso institucional</h3>
-          <p>O login é feito exclusivamente com o e-mail institucional do aluno (@aluno.ce.gov.br), sem permitir cadastro com contas pessoais.</p>
+          <h3>Acesso por perfil</h3>
+          <p>O login é feito com e-mail institucional, separado por perfil: aluno ou coordenação, cada um com permissões próprias.</p>
         </div>
         <div class="trust-card">
           <div class="trust-icon">
@@ -786,13 +870,27 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
           <div class="trust-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           </div>
-          <h3>Resultados transparentes</h3>
-          <p>Cada votação define quando o resultado é liberado: imediato, após o voto ou apenas ao encerrar.</p>
+          <h3>Triagem antes da publicação</h3>
+          <p>Nenhuma pauta chega ao aluno sem revisão. A coordenação libera cada votação antes da abertura pública.</p>
         </div>
       </div>
       <div class="notice-box">
         <strong>Nota:</strong> nesta demonstração a autenticação institucional, a separação criptográfica entre identidade e voto, e o armazenamento oficial de dados ainda dependem de integração com o backend da SEDUC. Os números exibidos aqui são ilustrativos.
       </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════ PAGE PAINEL DA COORDENAÇÃO ══════ -->
+<div class="page" id="pg-painel">
+  <section class="sec">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-eyebrow">Restrito · Coordenação</div>
+        <h2 class="sec-title">Painel de triagem</h2>
+        <p class="sec-sub">Pautas aguardando revisão antes de serem liberadas para votação pública dos alunos.</p>
+      </div>
+      <div class="polls-grid" id="painel-grid"></div>
     </div>
   </section>
 </div>
@@ -844,8 +942,8 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
       <li><a href="#">Portal Educa Ceará</a></li>
     </ul></div>
     <div class="foot-col"><h4>Acesso</h4><ul>
-      <li><button onclick="openLogin()">Área do Estudante</button></li>
-      <li><button onclick="openLogin()">Área da Gestão</button></li>
+      <li><button onclick="openLogin('aluno')">Área do Estudante</button></li>
+      <li><button onclick="openLogin('coordenacao')">Área da Gestão</button></li>
       <li><a href="#">Manual de Uso</a></li>
       <li><a href="#">Suporte Técnico</a></li>
     </ul></div>
@@ -860,7 +958,7 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
   </div>
 </footer>
 
-<!-- LOGIN MODAL (frontend-only, preparado para integração futura) -->
+<!-- LOGIN MODAL -->
 <div class="modal-bg" id="login-bg" onclick="if(event.target===this)closeLogin()">
   <div class="modal">
     <div class="modal-top">
@@ -868,33 +966,45 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
       <button class="modal-x" onclick="closeLogin()" aria-label="Fechar">✕</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:12px;color:var(--ink-3);margin-bottom:18px">Acesso exclusivo com conta institucional do aluno.</p>
+      <div class="login-tabs">
+        <button class="login-tab on" id="lt-aluno" onclick="setLoginTab('aluno')">Sou Aluno</button>
+        <button class="login-tab" id="lt-coordenacao" onclick="setLoginTab('coordenacao')">Sou da Coordenação</button>
+      </div>
 
-      <button type="button" class="google-btn" onclick="handleGoogleClick()">
-        <svg width="18" height="18" viewBox="0 0 18 18">
-          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/>
-          <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 0 0 9 18z"/>
-          <path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/>
-          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.97l2.99 2.33C4.66 5.17 6.65 3.58 9 3.58z"/>
-        </svg>
-        <span>Entrar com Google institucional</span>
-      </button>
-      <div class="login-divider"><span>ou com e-mail e senha</span></div>
+      <div class="login-pane on" id="lp-aluno">
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:16px">Acesse com seu e-mail institucional de aluno para votar nas pautas abertas.</p>
+        <form onsubmit="handleLoginSubmit(event,'aluno')">
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">E-mail institucional</label>
+          <input type="email" placeholder="nome.sobrenome@aluno.ce.gov.br" required
+            style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:14px;font-family:inherit">
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">Senha</label>
+          <input type="password" placeholder="••••••••" required
+            style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:8px;font-family:inherit">
+          <div style="text-align:right;margin-bottom:18px">
+            <a href="#" style="font-size:12px;color:var(--blue)" onclick="return false">Esqueci minha senha</a>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;padding:12px">Entrar como aluno</button>
+        </form>
+      </div>
 
-      <form onsubmit="handleLoginSubmit(event)">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">E-mail institucional</label>
-        <input type="email" placeholder="nome.sobrenome@aluno.ce.gov.br" required
-          style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:14px;font-family:inherit">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">Senha</label>
-        <input type="password" placeholder="••••••••" required
-          style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:8px;font-family:inherit">
-        <div style="text-align:right;margin-bottom:18px">
-          <a href="#" style="font-size:12px;color:var(--blue)" onclick="return false">Esqueci minha senha</a>
-        </div>
-        <button type="submit" class="btn-primary" style="width:100%;padding:12px">Entrar</button>
-      </form>
+      <div class="login-pane" id="lp-coordenacao">
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:16px">Acesso restrito à equipe da coordenação para triagem e liberação de votações.</p>
+        <form onsubmit="handleLoginSubmit(event,'coordenacao')">
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">E-mail institucional</label>
+          <input type="email" placeholder="nome.sobrenome@seduc.ce.gov.br" required
+            style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:14px;font-family:inherit">
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">Senha</label>
+          <input type="password" placeholder="••••••••" required
+            style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:8px;font-family:inherit">
+          <div style="text-align:right;margin-bottom:18px">
+            <a href="#" style="font-size:12px;color:var(--blue)" onclick="return false">Esqueci minha senha</a>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;padding:12px">Entrar como coordenação</button>
+        </form>
+      </div>
+
       <div class="notice-box" style="margin-top:20px">
-        <strong>Nota para o desenvolvedor:</strong> para ativar o login com Google de verdade, é preciso (1) criar um OAuth Client ID no Google Cloud Console, (2) restringir o domínio institucional no lado do servidor — o parâmetro <code>hd</code> do lado do cliente é só uma sugestão de UI, não uma barreira de segurança — e (3) validar o token no backend antes de abrir sessão. Para e-mail/senha, falta a validação do domínio @aluno.ce.gov.br e o controle de sessão no servidor.
+        <strong>Nota para o desenvolvedor:</strong> este é um protótipo de front-end. Qualquer e-mail e senha preenchidos entram na demonstração no perfil escolhido acima. Para produção é necessário validar credenciais e domínio (@aluno.ce.gov.br / @seduc.ce.gov.br) no backend e controlar a sessão no servidor.
       </div>
     </div>
   </div>
@@ -976,6 +1086,18 @@ const POLLS = [
     opts:[{id:'a4a',label:'Horário livre de estudo na biblioteca',v:223},
           {id:'a4b',label:'Atividades extracurriculares no contraturno',v:189},
           {id:'a4c',label:'Semana de saúde mental anual',v:304}] },
+  { id:'t1', src:'coordenacao', status:'triagem',
+    title:'Cardápio da cantina escolar do próximo bimestre',
+    info:'Proposta da Coordenação · Aguardando triagem',
+    opts:[{id:'t1a',label:'Manter opções atuais',v:0},
+          {id:'t1b',label:'Incluir mais opções vegetarianas',v:0},
+          {id:'t1c',label:'Criar cardápio rotativo mensal',v:0}] },
+  { id:'t2', src:'alunos', status:'triagem',
+    title:'Novo horário para o intervalo entre as aulas',
+    info:'Proposta do Grêmio Estudantil · Aguardando triagem',
+    opts:[{id:'t2a',label:'Manter 15 minutos',v:0},
+          {id:'t2b',label:'Ampliar para 20 minutos',v:0},
+          {id:'t2c',label:'Dividir em dois intervalos curtos',v:0}] },
 ];
 
 function getOpts(poll){
@@ -983,67 +1105,98 @@ function getOpts(poll){
   return poll.opts.map(o=>({...o,v:o.v+(d['cv_'+o.id]||0)}));
 }
 function total(opts){return opts.reduce((s,o)=>s+o.v,0)}
+function getStatus(poll){
+  const d=ls();
+  return d['status_'+poll.id]||poll.status;
+}
+
+// ═══ SESSION / AUTH ══════════════════════════════════════════════
+function getSession(){ try{return JSON.parse(localStorage.getItem('ded_session'))||null}catch{return null} }
+function setSession(s){ localStorage.setItem('ded_session',JSON.stringify(s)); renderAuth(); }
+function clearSession(){ localStorage.removeItem('ded_session'); renderAuth(); }
+
+function renderAuth(){
+  const s=getSession();
+  const cta=document.getElementById('h-cta');
+  const dcta=document.getElementById('drawer-cta');
+  const nbPainel=document.getElementById('nb-painel');
+  const drawerPainel=document.getElementById('drawer-painel');
+  const isCoord = s && s.role==='coordenacao';
+
+  nbPainel.style.display = isCoord ? '' : 'none';
+  drawerPainel.style.display = isCoord ? '' : 'none';
+
+  if(!s){
+    cta.innerHTML = `
+      <button class="btn-secondary" onclick="nav('sobre')">Saiba mais</button>
+      <button class="btn-primary" onclick="openLogin()">Entrar na plataforma</button>`;
+    dcta.innerHTML = `<button class="btn-primary" style="width:100%;padding:12px" onclick="openLogin();closeDrawer()">Entrar na plataforma</button>`;
+    return;
+  }
+  const roleLabel = isCoord ? 'Coordenação' : 'Aluno';
+  const badgeColor = isCoord ? 'var(--blue-bg)' : 'var(--green-bg)';
+  const textColor = isCoord ? 'var(--blue)' : 'var(--green)';
+  cta.innerHTML = `
+    <span style="font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;background:${badgeColor};color:${textColor}">${roleLabel} · ${s.email.split('@')[0]}</span>
+    <button class="btn-secondary" onclick="logout()">Sair</button>`;
+  dcta.innerHTML = `
+    <div style="font-size:12px;font-weight:600;padding:8px 12px;border-radius:var(--radius-2);background:${badgeColor};color:${textColor};margin-bottom:8px;text-align:center">${roleLabel} · ${s.email.split('@')[0]}</div>
+    <button class="btn-secondary" style="width:100%;padding:12px" onclick="logout();closeDrawer()">Sair</button>`;
+}
+
+function logout(){
+  clearSession();
+  toast('Você saiu da plataforma.','ok');
+  if(document.getElementById('pg-painel').classList.contains('active')) nav('home');
+}
 
 // ═══ NAVIGATION ══════════════════════════════════════════════════
-const NAV_IDS = ['home','votes','sobre','seguranca','galeria'];
 function nav(page){
+  if(page==='painel'){
+    const s=getSession();
+    if(!s||s.role!=='coordenacao'){
+      toast('Entre como coordenação para acessar o painel.','err');
+      openLogin('coordenacao');
+      return;
+    }
+  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('pg-'+page).classList.add('active');
+  const target=document.getElementById('pg-'+page);
+  // restart animation
+  target.classList.remove('active'); void target.offsetWidth;
+  target.classList.add('active');
   document.querySelectorAll('.h-nav-btn').forEach(b=>b.classList.remove('on'));
-  const map={home:'nb-home',sobre:'nb-como',votes:'nb-votes',seguranca:'nb-seguranca',galeria:'nb-galeria'};
+  const map={home:'nb-home',sobre:'nb-como',votes:'nb-votes',seguranca:'nb-seguranca',galeria:'nb-galeria',painel:'nb-painel'};
   const nb = document.getElementById(map[page]);
   if(nb) nb.classList.add('on');
   document.getElementById('page-tabs').style.display = page==='votes'?'block':'none';
   window.scrollTo({top:0,behavior:'smooth'});
   if(page==='votes') render('votes-grid', currentFilter);
   if(page==='home'){ render('home-grid','destaque'); updateStats(); }
+  if(page==='painel') renderPainel();
 }
 function openDrawer(){ document.getElementById('drawer').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); }
 function closeDrawer(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); }
-function openLogin(){ document.getElementById('login-bg').classList.add('open'); }
+
+function openLogin(tab){
+  document.getElementById('login-bg').classList.add('open');
+  if(tab) setLoginTab(tab);
+}
 function closeLogin(){ document.getElementById('login-bg').classList.remove('open'); }
-function handleLoginSubmit(e){
+function setLoginTab(t){
+  document.querySelectorAll('.login-tab').forEach(b=>b.classList.toggle('on', b.id==='lt-'+t));
+  document.querySelectorAll('.login-pane').forEach(p=>p.classList.toggle('on', p.id==='lp-'+t));
+}
+function handleLoginSubmit(e,role){
   e.preventDefault();
-  toast('Login ainda não conectado a um serviço real (protótipo).','err');
-}
-
-// ═══ GOOGLE SIGN-IN (institucional, restrito a @aluno.ce.gov.br) ═══
-// IMPORTANTE: troque GOOGLE_CLIENT_ID pelo Client ID real do Google Cloud
-// Console (OAuth consent screen) antes de publicar. O parâmetro "hd" apenas
-// sugere o domínio no seletor de contas do Google — a restrição REAL precisa
-// ser verificada no backend a partir do campo "hd"/"email" do token decodificado.
-const GOOGLE_CLIENT_ID = 'SEU_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
-const INSTITUTIONAL_DOMAIN = 'aluno.ce.gov.br';
-
-function handleGoogleClick(){
-  if (typeof google === 'undefined' || !google.accounts || GOOGLE_CLIENT_ID.startsWith('SEU_')){
-    toast('Login com Google ainda não configurado: defina GOOGLE_CLIENT_ID (protótipo).','err');
-    return;
-  }
-  google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    hd: INSTITUTIONAL_DOMAIN,           // sugere apenas contas do domínio institucional
-    callback: handleGoogleCredential
-  });
-  google.accounts.id.prompt(); // abre o seletor de contas do Google
-}
-
-function handleGoogleCredential(response){
-  // response.credential é um JWT assinado pelo Google.
-  // Isto aqui SÓ decodifica localmente para fins de demonstração —
-  // nunca confie nisso como autenticação real. O token precisa ser
-  // enviado para o backend e validado com a biblioteca oficial do Google
-  // (google-auth-library) antes de abrir qualquer sessão.
-  try{
-    const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    if (payload.hd !== INSTITUTIONAL_DOMAIN){
-      toast('Use sua conta institucional @'+INSTITUTIONAL_DOMAIN+'.','err');
-      return;
-    }
-    toast('Identidade Google recebida — validação de sessão pendente no backend (protótipo).','ok');
-  }catch(err){
-    toast('Não foi possível processar a resposta do Google.','err');
-  }
+  const form=e.target;
+  const email=form.querySelector('input[type=email]').value.trim();
+  if(!email){ toast('Informe um e-mail válido.','err'); return; }
+  setSession({role, email});
+  closeLogin();
+  form.reset();
+  toast(role==='coordenacao' ? 'Login realizado como coordenação.' : 'Login realizado como aluno.', 'ok');
+  if(role==='coordenacao') nav('painel');
 }
 
 // ═══ FILTER ══════════════════════════════════════════════════════
@@ -1060,17 +1213,21 @@ const COLORS=['','b','c','d'];
 function render(containerId, filter){
   const el=document.getElementById(containerId);
   if(!el) return;
-  let polls=[...POLLS];
-  if(filter==='abertas')     polls=polls.filter(p=>p.status==='aberta');
-  else if(filter==='encerradas') polls=polls.filter(p=>p.status==='encerrada');
+  let polls=POLLS.filter(p=>getStatus(p)!=='triagem');
+  if(filter==='abertas')     polls=polls.filter(p=>getStatus(p)==='aberta');
+  else if(filter==='encerradas') polls=polls.filter(p=>getStatus(p)==='encerrada');
   else if(filter==='coordenacao') polls=polls.filter(p=>p.src==='coordenacao');
   else if(filter==='alunos') polls=polls.filter(p=>p.src==='alunos');
-  else if(filter==='destaque') polls=polls.filter(p=>p.status==='aberta').slice(0,3);
+  else if(filter==='destaque') polls=polls.filter(p=>getStatus(p)==='aberta').slice(0,3);
   if(!polls.length){
     el.innerHTML='<div class="empty-state"><p>Nenhuma votação encontrada nesta categoria.</p></div>';
     return;
   }
   el.innerHTML=polls.map(buildCard).join('');
+  animateFills(el);
+}
+
+function animateFills(el){
   setTimeout(()=>{
     el.querySelectorAll('.opt-result-fill').forEach(f=>{f.style.width=f.dataset.w});
   },60);
@@ -1081,8 +1238,11 @@ function buildCard(poll){
   const opts=getOpts(poll);
   const tot=total(opts);
   const voted=d[poll.id];
-  const open=poll.status==='aberta';
-  const canVote=open&&!voted;
+  const status=getStatus(poll);
+  const open=status==='aberta';
+  const session=getSession();
+  const isAluno = session && session.role==='aluno';
+  const canVote=open&&!voted&&isAluno;
 
   const srcBadge = poll.src==='coordenacao'
     ? '<span class="badge badge-blue">Coordenação</span>'
@@ -1092,7 +1252,13 @@ function buildCard(poll){
     : '<span class="badge badge-red">Encerrada</span>';
 
   let optsHTML;
-  if(canVote){
+  if(open && !voted && !isAluno){
+    optsHTML = opts.map(o=>`
+      <button class="opt-btn" onclick="promptAlunoLogin()">
+        <span>${o.label}</span>
+        <span class="opt-btn-check"><span class="opt-btn-check-dot"></span></span>
+      </button>`).join('');
+  } else if(canVote){
     optsHTML=opts.map(o=>`
       <button class="opt-btn" onclick="vote('${poll.id}','${o.id}')">
         <span>${o.label}</span>
@@ -1135,8 +1301,15 @@ function buildCard(poll){
   </div>`;
 }
 
+function promptAlunoLogin(){
+  toast('Entre como aluno para votar.','err');
+  openLogin('aluno');
+}
+
 // ═══ VOTE ════════════════════════════════════════════════════════
 function vote(pollId,optId){
+  const session=getSession();
+  if(!session||session.role!=='aluno'){ promptAlunoLogin(); return; }
   const d=ls();
   if(d[pollId]){toast('Você já participou desta votação.','err');return;}
   d[pollId]=optId;
@@ -1149,10 +1322,56 @@ function vote(pollId,optId){
     const tmp=document.createElement('div');
     tmp.innerHTML=buildCard(poll);
     const nw=tmp.firstElementChild;
+    nw.style.animation='cardVoted .4s ease';
     old.replaceWith(nw);
+    animateFills(nw.parentElement||document);
     setTimeout(()=>{nw.querySelectorAll('.opt-result-fill').forEach(f=>{f.style.width=f.dataset.w})},60);
   }
   render('home-grid','destaque');
+  updateStats();
+}
+
+// ═══ PAINEL DA COORDENAÇÃO ═══════════════════════════════════════
+function renderPainel(){
+  const el=document.getElementById('painel-grid');
+  const polls=POLLS.filter(p=>getStatus(p)==='triagem');
+  if(!polls.length){
+    el.innerHTML='<div class="empty-state"><p>Nenhuma pauta aguardando triagem no momento.</p></div>';
+    return;
+  }
+  el.innerHTML=polls.map(poll=>{
+    const srcBadge = poll.src==='coordenacao'
+      ? '<span class="badge badge-blue">Coordenação</span>'
+      : '<span class="badge badge-green">Alunos</span>';
+    const optsHTML = poll.opts.map(o=>`
+      <div class="opt-result">
+        <div class="opt-result-top"><span class="opt-result-label">${o.label}</span></div>
+      </div>`).join('');
+    return `<div class="poll-card" id="pc-painel-${poll.id}">
+      <div class="pc-meta">${srcBadge}<span class="badge badge-amber">Em triagem</span></div>
+      <div class="pc-title">${poll.title}</div>
+      <div class="pc-info">${poll.info}</div>
+      <div class="pc-opts">${optsHTML}</div>
+      <div class="pc-foot">
+        <span class="pc-total">${poll.opts.length} opções propostas</span>
+        <button class="btn-primary" style="padding:6px 14px;font-size:12px" onclick="liberarVotacao('${poll.id}')">Liberar para votação</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function liberarVotacao(pollId){
+  const d=ls();
+  d['status_'+pollId]='aberta';
+  ss(d);
+  toast('Votação liberada para os alunos.','ok');
+  const card=document.getElementById('pc-painel-'+pollId);
+  if(card){
+    card.style.animation='cardRelease .35s ease forwards';
+    setTimeout(()=>renderPainel(),320);
+  } else {
+    renderPainel();
+  }
   updateStats();
 }
 
@@ -1174,7 +1393,7 @@ function openModal(pollId){
           <span style="font-size:12px;font-weight:700;color:${colors[i]}">${pct}%</span>
         </div>
         <div style="height:5px;background:var(--surface-3);border-radius:2px;overflow:hidden">
-          <div style="width:${pct}%;height:100%;background:${colors[i]};border-radius:2px"></div>
+          <div style="width:0%;height:100%;background:${colors[i]};border-radius:2px;transition:width .7s cubic-bezier(.4,0,.2,1)" data-w="${pct}%"></div>
         </div>
         <div style="font-size:11px;color:var(--ink-4);margin-top:3px">${o.v.toLocaleString('pt-BR')} votos</div>
       </div>`;
@@ -1183,6 +1402,9 @@ function openModal(pollId){
       Total: <strong style="color:var(--ink-2)">${tot.toLocaleString('pt-BR')} participantes</strong>
     </div>`;
   document.getElementById('modal-bg').classList.add('open');
+  setTimeout(()=>{
+    document.querySelectorAll('#modal-body [data-w]').forEach(f=>{f.style.width=f.dataset.w});
+  },80);
 }
 function closeModal(){ document.getElementById('modal-bg').classList.remove('open'); }
 
@@ -1197,24 +1419,39 @@ function toast(msg,type){
 }
 
 // ═══ STATS (real, derived from data — no invented numbers) ═══════
+function animateNumber(el,target){
+  if(!el) return;
+  const start=parseInt(el.textContent.replace(/\D/g,''))||0;
+  if(start===target){ el.textContent=target; return; }
+  const dur=500, t0=performance.now();
+  function step(t){
+    const p=Math.min(1,(t-t0)/dur);
+    const eased=1-Math.pow(1-p,3);
+    el.textContent=Math.round(start+(target-start)*eased).toLocaleString('pt-BR');
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 function updateStats(){
   const d=ls();
-  const totalVotes = Object.keys(d).filter(k=>!k.startsWith('cv_')).length;
-  const abertas = POLLS.filter(p=>p.status==='aberta').length;
-  const coord = POLLS.filter(p=>p.src==='coordenacao').length;
-  const alunos = POLLS.filter(p=>p.src==='alunos').length;
-  setText('stat-total', POLLS.length);
-  setText('stat-abertas', abertas);
-  setText('stat-coord', coord);
-  setText('stat-alunos', alunos);
-  setText('hn-alunos', totalVotes);
-  setText('hn-vots', POLLS.length);
-  setText('hn-abertas', abertas);
+  const totalVotes = Object.keys(d).filter(k=>!k.startsWith('cv_')&&!k.startsWith('status_')).length;
+  const visiblePolls = POLLS.filter(p=>getStatus(p)!=='triagem');
+  const abertas = visiblePolls.filter(p=>getStatus(p)==='aberta').length;
+  const coord = visiblePolls.filter(p=>p.src==='coordenacao').length;
+  const alunos = visiblePolls.filter(p=>p.src==='alunos').length;
+  animateNumber(document.getElementById('stat-total'), visiblePolls.length);
+  animateNumber(document.getElementById('stat-abertas'), abertas);
+  animateNumber(document.getElementById('stat-coord'), coord);
+  animateNumber(document.getElementById('stat-alunos'), alunos);
+  animateNumber(document.getElementById('hn-alunos'), totalVotes);
+  animateNumber(document.getElementById('hn-vots'), visiblePolls.length);
+  animateNumber(document.getElementById('hn-abertas'), abertas);
 }
 function setText(id,val){ const el=document.getElementById(id); if(el) el.textContent=val; }
 
 // ═══ INIT ════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
+  renderAuth();
   render('home-grid','destaque');
   document.getElementById('page-tabs').style.display='none';
   updateStats();
