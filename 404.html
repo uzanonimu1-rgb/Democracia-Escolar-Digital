@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Democracia Escolar Digital — SEDUC Ceará</title>
+<title>Democracia Escolar Digital — Ceará Científico</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -38,39 +38,9 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--
 /* ─── UTILITIES ─── */
 .container{max-width:1200px;margin:0 auto;padding:0 40px}
 @media(max-width:640px){.container{padding:0 20px}}
+@media(max-width:380px){.container{padding:0 16px}}
 .page{display:none}.page.active{display:block}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-
-/* ─── PROTOTYPE NOTICE ─── */
-.proto-notice{
-  background:var(--surface-2);border-bottom:1px solid var(--line);
-  font-size:11px;color:var(--ink-4);text-align:center;padding:5px 16px;
-}
-
-/* ─── INSTITUTIONAL BAND ─── */
-.inst-band{
-  background:var(--green);
-  height:36px;display:flex;align-items:center;
-}
-.inst-band-inner{
-  max-width:1200px;margin:0 auto;padding:0 40px;
-  display:flex;align-items:center;justify-content:space-between;width:100%;
-}
-.inst-logos{display:flex;align-items:center;gap:24px}
-.inst-logo-item{
-  display:flex;align-items:center;
-  background:rgba(255,255,255,.92);
-  border-radius:2px;padding:3px 10px;height:26px;
-}
-.inst-logo-item img{height:18px;width:auto;object-fit:contain;display:block}
-.inst-sep{width:1px;height:16px;background:rgba(255,255,255,.25)}
-.inst-band-right{
-  font-size:11px;color:rgba(255,255,255,.6);
-  letter-spacing:.4px;font-weight:500;
-}
-@media(max-width:768px){
-  .inst-band{display:none}
-}
 
 /* ─── HEADER ─── */
 header{
@@ -95,16 +65,23 @@ header{
   font-family:'Playfair Display',serif;
 }
 .h-brand-sub{font-size:11px;color:var(--ink-3);margin-top:1px;font-weight:400}
-.h-nav{display:flex;align-items:center;gap:2px;flex:1}
+.h-nav{display:flex;align-items:center;gap:2px;flex:1;height:100%}
 .h-nav-btn{
-  font-size:13px;font-weight:500;color:var(--ink-2);
-  padding:6px 12px;border-radius:var(--radius-2);
+  position:relative;
+  font-size:13px;font-weight:500;color:var(--ink-3);
+  padding:8px 14px;border-radius:20px;
   border:none;background:none;cursor:pointer;
-  transition:background .15s,color .15s;white-space:nowrap;
+  transition:background .18s,color .15s;white-space:nowrap;
   font-family:'Inter',sans-serif;
 }
+.h-nav-btn::after{
+  content:'';position:absolute;left:14px;right:14px;bottom:-1px;height:2px;
+  border-radius:2px;background:var(--green);transform:scaleX(0);
+  transition:transform .18s cubic-bezier(.4,0,.2,1);
+}
 .h-nav-btn:hover{background:var(--surface-3);color:var(--ink)}
-.h-nav-btn.on{color:var(--blue);font-weight:600}
+.h-nav-btn.on{color:var(--ink);font-weight:600;background:var(--surface-3)}
+.h-nav-btn.on::after{transform:scaleX(1)}
 .h-spacer{flex:1}
 .h-cta{
   display:flex;align-items:center;gap:8px;flex-shrink:0;
@@ -131,6 +108,9 @@ header{
   padding:6px;flex-shrink:0;
 }
 .h-menu-btn svg{display:block;color:var(--ink-2)}
+@media(max-width:1080px){
+  .h-nav-btn{padding:8px 10px;font-size:12.5px}
+}
 @media(max-width:960px){
   .h-nav{display:none}
   .h-spacer{display:none}
@@ -142,6 +122,11 @@ header{
 @media(max-width:480px){
   .h-brand-sub{display:none}
   .h-brand{border-right:none;padding-right:0}
+  .header-wrap{height:58px;padding:0 16px}
+  .h-brand-img{width:34px;height:34px}
+}
+@media(max-width:360px){
+  .h-cta .btn-primary{padding:7px 12px;font-size:12px}
 }
 
 /* ─── DRAWER ─── */
@@ -284,6 +269,7 @@ header{
 
 /* SECTIONS */
 .sec{padding:72px 0}
+@media(max-width:640px){.sec{padding:48px 0}}
 .sec-alt{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .sec-head{margin-bottom:36px}
 .sec-eyebrow{
@@ -311,6 +297,10 @@ header{
   grid-template-columns:repeat(auto-fill,minmax(360px,1fr));
   gap:1px;background:var(--line);border:1px solid var(--line);
   border-radius:var(--radius-3);overflow:hidden;
+}
+@media(max-width:420px){
+  .polls-grid{grid-template-columns:1fr}
+  .poll-card{padding:22px}
 }
 .poll-card{background:var(--surface);padding:28px;display:flex;flex-direction:column;transition:background .15s}
 .poll-card:hover{background:var(--surface-2)}
@@ -387,6 +377,7 @@ header{
 .filter-btn.on{background:var(--ink);border-color:var(--ink);color:#fff}
 
 .page-tabs{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:64px;z-index:800}
+@media(max-width:480px){.page-tabs{top:58px}}
 .page-tabs-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;overflow-x:auto;scrollbar-width:none}
 .page-tabs-inner::-webkit-scrollbar{display:none}
 .tab{
@@ -508,9 +499,24 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
 }
 
 /* ─── LOGIN ─── */
-.login-tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:var(--radius-2);margin-bottom:20px}
-.login-tab{flex:1;font-size:12.5px;font-weight:600;padding:9px 10px;border-radius:4px;border:none;background:none;color:var(--ink-3);cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s,color .15s}
-.login-tab.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.login-tabs{display:flex;gap:8px;margin-bottom:24px}
+.login-tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 10px;border-radius:var(--radius-3);
+  border:1.5px solid var(--line);background:var(--surface);color:var(--ink-3);
+  cursor:pointer;font-family:'Inter',sans-serif;
+  transition:border-color .15s,background .15s,color .15s,transform .12s;
+}
+.login-tab-ic{
+  width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--surface-3);color:var(--ink-3);transition:background .15s,color .15s;
+}
+.login-tab-label{font-size:12.5px;font-weight:600}
+.login-tab:hover{border-color:var(--ink-4)}
+.login-tab#lt-aluno.on{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.login-tab#lt-aluno.on .login-tab-ic{background:var(--green);color:#fff}
+.login-tab#lt-coordenacao.on{border-color:var(--blue);background:var(--blue-bg);color:var(--blue)}
+.login-tab#lt-coordenacao.on .login-tab-ic{background:var(--blue);color:#fff}
 .login-pane{display:none}
 .login-pane.on{display:block}
 .cred-hint{
@@ -667,30 +673,21 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
 </head>
 <body>
 
-<div class="proto-notice">Demonstração local — votos registrados apenas neste navegador.</div>
-
-<!-- INST BAND -->
-<div class="inst-band">
-  <div class="inst-band-inner">
-    <div class="inst-logos">
-      <div class="inst-logo-item"><span style="font-size:10px;font-weight:700;color:var(--green);padding:2px 4px">GOVERNO DO CEARÁ</span></div>
-      <div class="inst-sep"></div>
-      <div class="inst-logo-item"><span style="font-size:10px;font-weight:700;color:var(--green);padding:2px 4px">SEDUC</span></div>
-      <div class="inst-sep"></div>
-      <div class="inst-logo-item"><span style="font-size:10px;font-weight:700;color:var(--green);padding:2px 4px">CREDE</span></div>
-    </div>
-    <span class="inst-band-right">Portal Oficial · Estado do Ceará</span>
-  </div>
-</div>
-
 <!-- HEADER -->
 <header>
   <div class="header-wrap">
     <a class="h-brand" href="#" onclick="nav('home');return false">
-      <span class="h-brand-img" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;background:var(--green);color:#fff;font-family:'Playfair Display',serif;font-weight:700">DE</span>
+      <span class="h-brand-img" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:9px;background:linear-gradient(150deg,var(--green) 0%,var(--green-2) 100%);flex-shrink:0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3 4 7v2h16V7l-8-4Z" fill="#fff"/>
+          <path d="M5 10v7M9 10v7M15 10v7M19 10v7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M3.5 20.5h17" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M9.5 13.2 11.3 15l3.2-3.6" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
       <div class="h-brand-text">
         <div class="h-brand-name">Democracia Escolar Digital</div>
-        <div class="h-brand-sub">Plataforma de Participação Estudantil · SEDUC</div>
+        <div class="h-brand-sub">Projeto Ceará Científico</div>
       </div>
     </a>
     <nav class="h-nav" aria-label="Navegação principal">
@@ -740,7 +737,7 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
     <div class="hero-bg-img"></div>
     <div class="hero-inner">
       <div>
-        <div class="hero-label">Programa Estadual · SEDUC Ceará</div>
+        <div class="hero-label">Projeto Estudantil · Ceará Científico</div>
         <h1>A sua opinião<br><strong>também faz parte da escola.</strong></h1>
         <p class="hero-sub">Participe de decisões, consultas e votações que ajudam a construir uma experiência escolar cada vez melhor.</p>
         <div class="hero-btns">
@@ -869,9 +866,9 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
     <div class="container">
       <div class="sobre-grid">
         <div>
-          <div class="sec-eyebrow">Sobre o Programa</div>
-          <h2 class="sec-title" style="margin-bottom:12px">Participação estudantil como política pública</h2>
-          <p class="sec-sub" style="margin-bottom:40px">O Democracia Escolar Digital é uma iniciativa da SEDUC Ceará que integra tecnologia e cidadania para fortalecer a representatividade dos alunos nas escolas públicas estaduais.</p>
+          <div class="sec-eyebrow">Sobre o Projeto</div>
+          <h2 class="sec-title" style="margin-bottom:12px">Participação estudantil na prática</h2>
+          <p class="sec-sub" style="margin-bottom:40px">O Democracia Escolar Digital é um projeto criado por estudantes, no âmbito do Ceará Científico, que integra tecnologia e cidadania para fortalecer a representatividade dos alunos na escola.</p>
           <div class="steps">
             <div class="step"><div class="step-num">01</div><div class="step-body"><h3>Participação Democrática</h3><p>Estudantes votam e deliberam sobre pautas reais da escola, promovendo o exercício da cidadania desde a educação básica.</p></div></div>
             <div class="step"><div class="step-num">02</div><div class="step-body"><h3>Decisões Escolares Coletivas</h3><p>Infraestrutura, projetos pedagógicos, eventos e melhorias são decididos de forma transparente com toda a comunidade escolar.</p></div></div>
@@ -881,7 +878,7 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
         </div>
         <div>
           <div class="sidebar-block">
-            <div class="sb-title">Pilares do Programa</div>
+            <div class="sb-title">Pilares do Projeto</div>
             <div class="pillar-item"><div class="pi-dot g"></div><div class="pi-text"><strong>Transparência</strong><span>Resultados públicos e auditáveis</span></div></div>
             <div class="pillar-item"><div class="pi-dot b"></div><div class="pi-text"><strong>Inclusão Digital</strong><span>Acesso pensado para todos os alunos</span></div></div>
             <div class="pillar-item"><div class="pi-dot a"></div><div class="pi-text"><strong>Cidadania Ativa</strong><span>Formação política e cívica</span></div></div>
@@ -923,7 +920,7 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"/></svg>
           </div>
           <h3>Acesso por perfil</h3>
-          <p>O login é feito com e-mail institucional, separado por perfil: aluno ou coordenação, cada um com permissões próprias.</p>
+          <p>O login é feito por e-mail, separado por perfil: aluno ou coordenação, cada um com permissões próprias.</p>
         </div>
         <div class="trust-card">
           <div class="trust-icon">
@@ -948,7 +945,7 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
         </div>
       </div>
       <div class="notice-box">
-        <strong>Nota:</strong> nesta demonstração a autenticação institucional, a separação criptográfica entre identidade e voto, e o armazenamento oficial de dados ainda dependem de integração com o backend da SEDUC. Os números exibidos aqui são ilustrativos.
+        <strong>Nota:</strong> nesta demonstração, a autenticação, a separação criptográfica entre identidade e voto, e o armazenamento definitivo dos dados ainda dependem da integração com um backend real. Os números exibidos aqui são ilustrativos.
       </div>
     </div>
   </section>
@@ -1011,7 +1008,7 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
     <div class="container">
       <div class="sec-head">
         <div class="sec-eyebrow">Galeria</div>
-        <h2 class="sec-title">O programa em ação</h2>
+        <h2 class="sec-title">O projeto em ação</h2>
         <p class="sec-sub">Registros de participação estudantil e cidadania nas escolas públicas do Ceará.</p>
       </div>
       <div class="gal-grid">
@@ -1033,10 +1030,16 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
   <div class="foot-main">
     <div>
       <div class="foot-brand-row">
-        <span style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;background:var(--green);color:#fff;font-family:'Playfair Display',serif;font-weight:700;font-size:13px">DE</span>
-        <div class="foot-brand-name">Democracia Escolar Digital<small>Secretaria da Educação do Ceará</small></div>
+        <span style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:linear-gradient(150deg,var(--green) 0%,var(--green-2) 100%);flex-shrink:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3 4 7v2h16V7l-8-4Z" fill="#fff"/>
+            <path d="M5 10v7M9 10v7M15 10v7M19 10v7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M3.5 20.5h17" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <div class="foot-brand-name">Democracia Escolar Digital<small>Projeto Ceará Científico</small></div>
       </div>
-      <p class="foot-desc">Plataforma de participação estudantil desenvolvida pela SEDUC Ceará para fortalecer a gestão democrática nas escolas públicas estaduais.</p>
+      <p class="foot-desc">Uma plataforma criada por estudantes para fortalecer a participação e a gestão democrática nas escolas públicas.</p>
     </div>
     <div class="foot-col"><h4>Navegação</h4><ul>
       <li><button onclick="nav('home')">Início</button></li>
@@ -1045,11 +1048,10 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
       <li><button onclick="nav('seguranca')">Segurança</button></li>
       <li><button onclick="nav('galeria')">Galeria</button></li>
     </ul></div>
-    <div class="foot-col"><h4>Instituições</h4><ul>
-      <li><a href="#">Governo do Ceará</a></li>
-      <li><a href="#">SEDUC</a></li>
-      <li><a href="#">CREDE</a></li>
-      <li><a href="#">Portal Educa Ceará</a></li>
+    <div class="foot-col"><h4>Projeto</h4><ul>
+      <li><a href="#">Sobre a equipe</a></li>
+      <li><a href="#">Ceará Científico</a></li>
+      <li><a href="#">Código aberto</a></li>
     </ul></div>
     <div class="foot-col"><h4>Acesso</h4><ul>
       <li><button onclick="openLogin('aluno')">Área do Estudante</button></li>
@@ -1059,11 +1061,9 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
     </ul></div>
   </div>
   <div class="foot-bottom">
-    <p class="foot-copy" id="foot-year">Governo do Estado do Ceará · Secretaria da Educação · Versão de demonstração</p>
+    <p class="foot-copy" id="foot-year">Democracia Escolar Digital · Projeto estudantil · Ceará Científico</p>
     <div class="foot-badges">
-      <span class="foot-badge">Gov CE</span>
-      <span class="foot-badge">SEDUC</span>
-      <span class="foot-badge">CREDE</span>
+      <span class="foot-badge">Ceará Científico</span>
     </div>
   </div>
 </footer>
@@ -1077,16 +1077,22 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
     </div>
     <div class="modal-body">
       <div class="login-tabs">
-        <button class="login-tab on" id="lt-aluno" onclick="setLoginTab('aluno')">Sou Aluno</button>
-        <button class="login-tab" id="lt-coordenacao" onclick="setLoginTab('coordenacao')">Sou da Coordenação</button>
+        <button class="login-tab on" id="lt-aluno" onclick="setLoginTab('aluno')">
+          <span class="login-tab-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg></span>
+          <span class="login-tab-label">Sou Aluno</span>
+        </button>
+        <button class="login-tab" id="lt-coordenacao" onclick="setLoginTab('coordenacao')">
+          <span class="login-tab-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
+          <span class="login-tab-label">Sou da Coordenação</span>
+        </button>
       </div>
 
       <div class="login-pane on" id="lp-aluno">
-        <p style="font-size:12px;color:var(--ink-3);margin-bottom:12px">Acesse com seu e-mail institucional de aluno para votar nas pautas abertas.</p>
-        <div class="cred-hint">Credencial de demonstração: <strong>aluno@aluno.ce.gov.br</strong> · senha <strong>aluno123</strong></div>
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:12px">Acesse com seu e-mail de aluno para votar nas pautas abertas.</p>
+        <div class="cred-hint">Credencial de demonstração: <strong>aluno@escola.edu.br</strong> · senha <strong>aluno123</strong></div>
         <form onsubmit="handleLoginSubmit(event,'aluno')">
-          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">E-mail institucional</label>
-          <input type="email" placeholder="aluno@aluno.ce.gov.br" required
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">E-mail</label>
+          <input type="email" placeholder="aluno@escola.edu.br" required
             style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:14px;font-family:inherit">
           <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">Senha</label>
           <input type="password" placeholder="••••••••" required
@@ -1101,10 +1107,10 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
 
       <div class="login-pane" id="lp-coordenacao">
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:12px">Acesso restrito à equipe da coordenação para triagem e liberação de votações.</p>
-        <div class="cred-hint">Credencial de demonstração: <strong>coordenacao@seduc.ce.gov.br</strong> · senha <strong>coord123</strong></div>
+        <div class="cred-hint">Credencial de demonstração: <strong>coordenacao@escola.edu.br</strong> · senha <strong>coord123</strong></div>
         <form onsubmit="handleLoginSubmit(event,'coordenacao')">
-          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">E-mail institucional</label>
-          <input type="email" placeholder="coordenacao@seduc.ce.gov.br" required
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">E-mail</label>
+          <input type="email" placeholder="coordenacao@escola.edu.br" required
             style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-2);font-size:13px;margin-bottom:14px;font-family:inherit">
           <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px">Senha</label>
           <input type="password" placeholder="••••••••" required
@@ -1232,8 +1238,8 @@ function getStatus(poll){
 
 // ═══ SESSION / AUTH ══════════════════════════════════════════════
 const DEMO_ACCOUNTS = {
-  aluno:        { email:'aluno@aluno.ce.gov.br',        senha:'aluno123' },
-  coordenacao:  { email:'coordenacao@seduc.ce.gov.br',  senha:'coord123' }
+  aluno:        { email:'aluno@escola.edu.br',        senha:'aluno123' },
+  coordenacao:  { email:'coordenacao@escola.edu.br',  senha:'coord123' }
 };
 function getSession(){ try{return JSON.parse(localStorage.getItem('ded_session'))||null}catch{return null} }
 function setSession(s){ localStorage.setItem('ded_session',JSON.stringify(s)); renderAuth(); }
@@ -1272,7 +1278,7 @@ function renderAuth(){
 function logout(){
   clearSession();
   toast('Você saiu da plataforma.','ok');
-  if(document.getElementById('pg-painel').classList.contains('active')) nav('home');
+  nav('home');
 }
 
 // ═══ NAVIGATION ══════════════════════════════════════════════════
