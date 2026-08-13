@@ -820,6 +820,37 @@ footer{background:var(--ink);border-top:2px solid var(--green)}
         <h2 class="sec-title">Votações escolares</h2>
         <p class="sec-sub">Selecione uma opção para registrar sua participação. Cada aluno participa uma vez por votação.</p>
       </div>
+
+      <div id="votes-propose-wrap" style="display:none;margin-bottom:24px">
+        <button class="btn-secondary" id="propose-toggle-btn" onclick="toggleProposePoll()">+ Propor uma votação</button>
+        <div class="create-poll-card" id="propose-poll-card">
+          <h3 style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px">Propor nova pauta</h3>
+          <p style="font-size:12.5px;color:var(--ink-3);margin-bottom:18px">Sua proposta é enviada para a triagem da coordenação. Se for aprovada, ela é liberada para votação de todos os alunos.</p>
+          <form id="propose-poll-form" onsubmit="handleProposePoll(event)">
+            <div class="cp-row">
+              <label class="cp-label">Título da pauta</label>
+              <input class="cp-input" id="pp-title" placeholder="Ex.: Qual jogo esportivo no próximo intervalo cultural?" required>
+            </div>
+            <div class="cp-row">
+              <label class="cp-label">Descrição / contexto (opcional)</label>
+              <input class="cp-input" id="pp-info" placeholder="Ex.: Proposta de um grupo do 2º Ano B">
+            </div>
+            <div class="cp-row">
+              <label class="cp-label">Opções de voto</label>
+              <div class="cp-opts-list" id="pp-opts-list">
+                <div class="cp-opt-row"><input class="cp-input" placeholder="Opção 1" required><button type="button" class="cp-opt-remove" onclick="removePpOpt(this)">✕</button></div>
+                <div class="cp-opt-row"><input class="cp-input" placeholder="Opção 2" required><button type="button" class="cp-opt-remove" onclick="removePpOpt(this)">✕</button></div>
+              </div>
+              <button type="button" class="cp-add-opt" onclick="addPpOpt()">+ Adicionar opção</button>
+            </div>
+            <div class="cp-actions">
+              <button type="submit" class="btn-primary">Enviar para triagem</button>
+              <button type="button" class="btn-secondary" onclick="toggleProposePoll()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div class="filter-row" id="filter-row">
         <button class="filter-btn on" data-f="abertas"     onclick="setFilter('abertas')">Abertas</button>
         <button class="filter-btn"    data-f="encerradas"  onclick="setFilter('encerradas')">Encerradas</button>
@@ -1218,6 +1249,7 @@ function renderAuth(){
 
   nbPainel.style.display = isCoord ? '' : 'none';
   drawerPainel.style.display = isCoord ? '' : 'none';
+  updateProposeVisibility();
 
   if(!s){
     cta.innerHTML = `
@@ -1264,7 +1296,7 @@ function nav(page){
   if(nb) nb.classList.add('on');
   document.getElementById('page-tabs').style.display = page==='votes'?'block':'none';
   window.scrollTo({top:0,behavior:'smooth'});
-  if(page==='votes') render('votes-grid', currentFilter);
+  if(page==='votes'){ render('votes-grid', currentFilter); updateProposeVisibility(); }
   if(page==='home'){ render('home-grid','destaque'); updateStats(); }
   if(page==='painel') renderPainel();
 }
@@ -1533,6 +1565,67 @@ function handleCreatePoll(e){
   toggleCreatePoll();
   renderPainel();
   updateStats();
+}
+
+// ═══ PROPOR VOTAÇÃO (Aluno) ══════════════════════════════════════
+function updateProposeVisibility(){
+  const wrap=document.getElementById('votes-propose-wrap');
+  if(!wrap) return;
+  const s=getSession();
+  wrap.style.display = (s && s.role==='aluno') ? 'block' : 'none';
+}
+function toggleProposePoll(){
+  const card=document.getElementById('propose-poll-card');
+  const btn=document.getElementById('propose-toggle-btn');
+  const isOpen=card.classList.toggle('open');
+  btn.textContent = isOpen ? 'Fechar' : '+ Propor uma votação';
+  if(isOpen) document.getElementById('pp-title').focus();
+  else resetProposePollForm();
+}
+function resetProposePollForm(){
+  document.getElementById('propose-poll-form').reset();
+  const list=document.getElementById('pp-opts-list');
+  list.innerHTML=`
+    <div class="cp-opt-row"><input class="cp-input" placeholder="Opção 1" required><button type="button" class="cp-opt-remove" onclick="removePpOpt(this)">✕</button></div>
+    <div class="cp-opt-row"><input class="cp-input" placeholder="Opção 2" required><button type="button" class="cp-opt-remove" onclick="removePpOpt(this)">✕</button></div>`;
+}
+function addPpOpt(){
+  const list=document.getElementById('pp-opts-list');
+  if(list.children.length>=6){ toast('Máximo de 6 opções por votação.','err'); return; }
+  const row=document.createElement('div');
+  row.className='cp-opt-row';
+  row.innerHTML=`<input class="cp-input" placeholder="Opção ${list.children.length+1}" required><button type="button" class="cp-opt-remove" onclick="removePpOpt(this)">✕</button>`;
+  list.appendChild(row);
+  row.querySelector('input').focus();
+}
+function removePpOpt(btn){
+  const list=document.getElementById('pp-opts-list');
+  if(list.children.length<=2){ toast('A votação precisa de ao menos 2 opções.','err'); return; }
+  btn.closest('.cp-opt-row').remove();
+}
+function handleProposePoll(e){
+  e.preventDefault();
+  const session=getSession();
+  if(!session||session.role!=='aluno'){ promptAlunoLogin(); return; }
+  const title=document.getElementById('pp-title').value.trim();
+  const info=document.getElementById('pp-info').value.trim();
+  const optInputs=[...document.querySelectorAll('#pp-opts-list input')];
+  const labels=optInputs.map(i=>i.value.trim()).filter(Boolean);
+  if(labels.length<2){ toast('Preencha pelo menos 2 opções.','err'); return; }
+  const stamp=Date.now();
+  const poll={
+    id:'u'+stamp,
+    src:'alunos',
+    status:'triagem',
+    title,
+    info: info || 'Proposta de um aluno · Aguardando triagem',
+    opts: labels.map((label,i)=>({id:'u'+stamp+'_'+i, label, v:0}))
+  };
+  const custom=getCustomPolls();
+  custom.push(poll);
+  saveCustomPolls(custom);
+  toast('Proposta enviada! A coordenação vai revisar antes de liberar.','ok');
+  toggleProposePoll();
 }
 
 // ═══ MODAL ═══════════════════════════════════════════════════════
